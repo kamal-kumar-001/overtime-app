@@ -1,0 +1,287 @@
+import React, { useState, useEffect } from 'react';
+import { View, Text, Switch, TouchableOpacity, Image, Modal, Linking, Share } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useGlobalContext } from "../../../context/GlobalProvider";
+import { router } from "expo-router";
+import { icons } from '../../../constants';
+import Checkbox from 'expo-checkbox';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// import PushNotification from 'react-native-push-notification';
+
+const Settings = () => {
+  const { user, setUser } = useGlobalContext();
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  // const [isDarkTheme, setDarkTheme] = useState(false);
+  const [selectedDays, setSelectedDays] = useState([]);
+
+  useEffect(() => {
+    const fetchDayOffFromLocalStorage = async () => {
+      try {
+        const storedData = await AsyncStorage.getItem('selectedDaysOff');
+        if (storedData) {
+          setSelectedDays(JSON.parse(storedData));
+        }
+      } catch (error) {
+        console.error("Error fetching day off data from local storage:", error);
+      }
+    };
+
+    fetchDayOffFromLocalStorage();
+  }, []);
+
+  const handleRateApp = () => {
+    Linking.openURL('https://play.google.com/store/apps/details?id=com.yourapp');
+  };
+  const handleSuggestions = () => {
+    const email = 'mrkamal0120@gmail.com';
+    const subject = 'App Suggestion';
+    const body = 'Hi, I have a suggestion for the app: ';
+    const url = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    Linking.openURL(url).catch((err) => console.error('Error opening email app:', err));
+  };
+
+  const handleReportABug = () => {
+    const email = 'mrkamal0120@gmail.com';
+    const subject = 'Bug Report';
+    const body = 'Hi, I encountered the following bug: ';
+    const url = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    Linking.openURL(url).catch((err) => console.error('Error opening email app:', err));
+  };
+
+  const handleInviteFriends = async () => {
+    try {
+      await Share.share({
+        message: 'Check out this cool app: [App Link]',
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+  const handleLogout = () => {
+    setUser(null);
+    router.replace('/sign-in')
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const handleDayOffSubmit = () => {
+    // Store the selected days off in local storage
+    try {
+      const jsonValue = JSON.stringify(selectedDays);
+      AsyncStorage.setItem('selectedDaysOff', jsonValue);
+      // console.log(`Selected days off: ${selectedDays}`);
+    } catch (error) {
+      console.error('Error storing selected days off in local storage:', error);
+    }
+    toggleModal();
+  };
+
+  const handleDaySelection = (day) => {
+    setSelectedDays(prevSelectedDays =>
+      prevSelectedDays?.includes(day)
+        ? prevSelectedDays?.filter(d => d !== day)
+        : [...prevSelectedDays, day]
+    );
+  };
+
+
+  // Must be called in the beginning of your app to configure notifications
+  // PushNotification.configure({
+  //   // (optional) Called when Token is generated (iOS and Android)
+  //   onRegister: function (token) {
+  //     console.log('TOKEN:', token);
+  //   },
+
+  //   // (required) Called when a remote or local notification is opened or received
+  //   onNotification: function (notification) {
+  //     console.log('NOTIFICATION:', notification);
+  //     notification.finish(PushNotificationIOS.FetchResult.NoData);
+  //   },
+
+  //   // Should the initial notification be popped automatically
+  //   popInitialNotification: true,
+
+  //   // Request permissions on iOS, it does nothing on Android
+  //   requestPermissions: true,
+  // });
+
+
+
+  // const toggleNotifications = () => {
+  //   setNotificationsEnabled((prev) => {
+  //     const newValue = !prev;
+
+  //     if (newValue) {
+  //       // Enable notifications
+  //       PushNotification.localNotificationSchedule({
+  //         message: 'Notifications are enabled',
+  //         date: new Date(Date.now() + 5 * 1000), // Schedule a notification in 5 seconds as an example
+  //       });
+  //     } else {
+  //       // Disable notifications
+  //       PushNotification.cancelAllLocalNotifications();
+  //       PushNotification.localNotification({
+  //         message: 'Notifications are disabled',
+  //       });
+  //     }
+
+  //     return newValue;
+  //   });
+  // };
+  const toggleNotifications = () => {
+    setNotificationsEnabled(!notificationsEnabled);
+  };
+
+
+  return (
+    <SafeAreaView className="bg-primary h-full px-4">
+      <View className="flex-col items-center my-6">
+        <TouchableOpacity className="absolute right-4 top-4"
+          onPress={handleLogout}
+        >
+          <Image
+            source={icons.logout}
+            resizeMode="contain"
+            tintColor='red'
+            className="w-6 h-6"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity className="p-4 flex-col border-b border-black-200  justify-between items-center"
+          onPress={() => router.push('/setting/profile')}
+        >
+          <Image
+            source={icons.robot}
+            resizeMode="contain"
+            tintColor='white'
+            className="w-16 h-16"
+          />
+          <Text className="text-2xl text-white font-semibold mt-4">{user?.name || 'John'}</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View className="mt-4">
+        <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={toggleModal}>
+          <Text className="text-white text-lg">Set Day Offs</Text>
+          <Image
+            source={icons.right}
+            resizeMode="contain"
+            tintColor='white'
+            className="w-6 h-6"
+          />
+
+        </TouchableOpacity>
+        <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={() => router.push('/setting/shifts')}>
+          <Text className="text-white text-lg">Shifts</Text>
+          <Image
+            source={icons.shift}
+            resizeMode="contain"
+            tintColor='white'
+            className="w-6 h-6"
+          />
+
+        </TouchableOpacity>
+
+        <View className="p-4 border-b border-black-200 flex-row justify-between items-center">
+          <Text className="text-white text-lg">Notifications</Text>
+          <Switch value={notificationsEnabled} onValueChange={toggleNotifications} />
+        </View>
+
+        {/* <View className="p-4 border-b border-black-200 flex-row justify-between items-center">
+          <Text className="text-white text-lg">Dark Theme</Text>
+          <Switch value={isDarkTheme} onValueChange={setDarkTheme} />
+        </View> */}
+
+        <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={handleRateApp}>
+          <Text className="text-white text-lg">Rate App</Text>
+          <Image
+            source={icons.star}
+            resizeMode="contain"
+            tintColor='white'
+            className="w-6 h-6"
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={handleInviteFriends}>
+          <Text className="text-white text-lg">Invite Friends</Text>
+          <Image
+            source={icons.share}
+            resizeMode="contain"
+            tintColor='white'
+            className="w-6 h-6"
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleReportABug} className="p-4 border-b border-black-200 flex-row justify-between items-center">
+          <Text className="text-white text-lg">Report a Bug</Text>
+          <Image
+            source={icons.bug}
+            resizeMode="contain"
+            tintColor='white'
+            className="w-6 h-6"
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleSuggestions}
+          className="p-4 border-b border-black-200 flex-row justify-between items-center" >
+          <Text className="text-white text-lg">Suggestions</Text>
+          <Image
+            source={icons.light}
+            resizeMode="contain"
+            tintColor='white'
+            className="w-6 h-6"
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={() => router.push('/setting/about')}>
+          <Text className="text-white text-lg">About App</Text>
+          <Image
+            source={icons.info}
+            resizeMode="contain"
+            tintColor='white'
+            className="w-6 h-6"
+          />
+        </TouchableOpacity>
+      </View>
+
+      <Modal visible={isModalVisible} animationType="slide">
+        <View className="bg-primary h-full px-8 justify-center">
+          <Text className="text-white text-lg font-semibold mb-4">Select Your Day(s) Off</Text>
+          {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((day, index) => (
+            <View key={index} className="flex-col mb-2">
+              <View className="flex-row items-center justify-between">
+                <Text className="text-white font-pregular">{day}</Text>
+                <Checkbox
+                  value={selectedDays?.includes(day)}
+                  onValueChange={() => handleDaySelection(day)}
+                />
+              </View>
+              {index < 6 && <View className="bg-gray-500 h-px my-2" />}
+            </View>
+          ))}
+          <View className="flex-row justify-between py-8 px-8">
+            <TouchableOpacity className="w-2/5 py-2 rounded-xl bg-red-600" onPress={toggleModal}  >
+              <Text className="font-pregular text-center  text-white" >
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity className="w-2/5 py-2 rounded-xl bg-secondary" onPress={handleDayOffSubmit} >
+              <Text className="font-pregular text-center text-white" >
+                Submit
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+
+    </SafeAreaView>
+  );
+};
+
+export default Settings;
