@@ -68,7 +68,7 @@ const AboutApp = () => {
               <Image
                 source={icons.linkedin}
                 resizeMode="contain"
-                // tintColor='white'
+                tintColor='white'
                 className="w-6 h-6 "
               />
             </TouchableOpacity>

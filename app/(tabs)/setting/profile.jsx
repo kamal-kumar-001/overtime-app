@@ -29,7 +29,7 @@ const Profile = () => {
     const submit = async () => {
         const { token } = user;
         const userData = { ...form, token };
-        console.log(userData);
+        // console.log(userData);
         setSubmitting(true);
         try {
             await AsyncStorage.setItem('userData', JSON.stringify(userData));
@@ -106,7 +106,7 @@ const Profile = () => {
                     <CustomButton
                         title="Save"
                         handlePress={submit}
-                        containerStyles="mt-7"
+                        containerStyles="mt-7 bg-secondary "
                         isLoading={isSubmitting}
                     />
                 </View>

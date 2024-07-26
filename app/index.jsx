@@ -7,10 +7,13 @@ import { useGlobalContext } from "../context/GlobalProvider";
 import { icons } from "../constants";
 
 const Welcome = () => {
-  const { loading } = useGlobalContext();
+  const { loading, user, setUser } = useGlobalContext();
 
-  // if (!loading) return <Redirect href="/home" />;
-
+  if (!loading && user) return <Redirect href="/home" />;
+  const handleGuest = () => {
+    setUser("Guest");
+    router.push("/home")
+  };
   return (
     <SafeAreaView className="bg-primary h-full">
       <Loader isLoading={loading} />
@@ -43,10 +46,10 @@ const Welcome = () => {
           <CustomButton
             title="Continue with Phone"
             handlePress={() => router.push("/sign-up")}
-            containerStyles="w-full mt-7"
+            containerStyles="w-full mt-7 bg-secondary "
             textStyles='text-white'
           />
-          <TouchableOpacity onPress={() => router.push("/home")}>
+          <TouchableOpacity onPress={handleGuest}>
             <Text
               className="text-sm font-pregular text-gray-200 mt-8 underline text-center"
             >

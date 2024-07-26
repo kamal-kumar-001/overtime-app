@@ -27,12 +27,32 @@ import welcome from "../assets/images/welcome.png";
 import getwell from "../assets/images/getwell.png";
 import party from "../assets/images/party.gif";
 import emergency from "../assets/images/emergency.png";
+import uptime from "../assets/images/uptime.png";
+import holiday from "../assets/images/holiday.png";
+import checkout from "../assets/images/checkout.png";
+import halftime from "../assets/images/halftime.png";
+import next from "../assets/images/next.png";
+import previous from "../assets/images/previous.png";
+import leave from "../assets/images/leave.png";
 import trash from "../assets/icons/trash.png";
 import verify from "../assets/icons/verify.png";
 import shift from "../assets/icons/shift.png";
+import icon from "../assets/icon.png";
+import emergencyicon from "../assets/icons/emergency.png";
+import sick from "../assets/icons/sick.png";
 
 export default {
   welcome,
+  sick,
+  emergencyicon,
+  icon,
+  next,
+  previous,
+  leave,
+  uptime,
+  holiday,
+  halftime,
+  checkout,
   shift,
   getwell,
   party,

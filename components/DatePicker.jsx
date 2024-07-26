@@ -15,8 +15,8 @@ const DatePicker = ({ label, date, setDate }) => {
     return (
         <View className="flex flex-col items-start py-4 px-8">
             <Text className="text-white mb-2">{label}</Text>
-            <TouchableOpacity onPress={() => setShow(true)} className="bg-secondary p-4 rounded-lg">
-                <Text className="text-white">{date.toISOString().split('T')[0]}</Text>
+            <TouchableOpacity onPress={() => setShow(true)} className="border-2 border-secondary p-4 rounded-lg">
+                <Text className="text-white font-pregular ">{date.toISOString().split('T')[0]}</Text>
             </TouchableOpacity>
             {show && (
                 <DateTimePicker

@@ -33,7 +33,7 @@ const Timer = ({ timer, isRunning, setTimer, handleCheckInOut }) => {
                 title={isRunning ? "Check Out" : "Check In"}
                 handlePress={handleCheckInOut}
                 textStyles='text-white'
-                containerStyles="mt-6 w-4/5"
+                containerStyles="mt-6 w-4/5 bg-secondary "
             />
         </View>
     );

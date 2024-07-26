@@ -8,7 +8,6 @@ const GlobalProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [overtime, setOvertime] = useState(null);
   const [shifts, setShifts] = useState([]);
 
   useEffect(() => {
@@ -18,11 +17,6 @@ const GlobalProvider = ({ children }) => {
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
         setIsLogged(true);
-        // Assume shifts are stored separately in AsyncStorage
-        const storedShifts = await AsyncStorage.getItem('userShifts');
-        if (storedShifts) {
-          setShifts(JSON.parse(storedShifts));
-        }
       } else {
         setUser(null);
         setIsLogged(false);
@@ -41,8 +35,6 @@ const GlobalProvider = ({ children }) => {
         user,
         setUser,
         loading,
-        overtime,
-        setOvertime,
         shifts,
         setShifts,
       }}

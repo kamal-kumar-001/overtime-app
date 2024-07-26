@@ -75,7 +75,7 @@ const Settings = () => {
     try {
       const jsonValue = JSON.stringify(selectedDays);
       AsyncStorage.setItem('selectedDaysOff', jsonValue);
-      // console.log(`Selected days off: ${selectedDays}`);
+      console.log(jsonValue);
     } catch (error) {
       console.error('Error storing selected days off in local storage:', error);
     }
@@ -90,50 +90,6 @@ const Settings = () => {
     );
   };
 
-
-  // Must be called in the beginning of your app to configure notifications
-  // PushNotification.configure({
-  //   // (optional) Called when Token is generated (iOS and Android)
-  //   onRegister: function (token) {
-  //     console.log('TOKEN:', token);
-  //   },
-
-  //   // (required) Called when a remote or local notification is opened or received
-  //   onNotification: function (notification) {
-  //     console.log('NOTIFICATION:', notification);
-  //     notification.finish(PushNotificationIOS.FetchResult.NoData);
-  //   },
-
-  //   // Should the initial notification be popped automatically
-  //   popInitialNotification: true,
-
-  //   // Request permissions on iOS, it does nothing on Android
-  //   requestPermissions: true,
-  // });
-
-
-
-  // const toggleNotifications = () => {
-  //   setNotificationsEnabled((prev) => {
-  //     const newValue = !prev;
-
-  //     if (newValue) {
-  //       // Enable notifications
-  //       PushNotification.localNotificationSchedule({
-  //         message: 'Notifications are enabled',
-  //         date: new Date(Date.now() + 5 * 1000), // Schedule a notification in 5 seconds as an example
-  //       });
-  //     } else {
-  //       // Disable notifications
-  //       PushNotification.cancelAllLocalNotifications();
-  //       PushNotification.localNotification({
-  //         message: 'Notifications are disabled',
-  //       });
-  //     }
-
-  //     return newValue;
-  //   });
-  // };
   const toggleNotifications = () => {
     setNotificationsEnabled(!notificationsEnabled);
   };
@@ -141,7 +97,7 @@ const Settings = () => {
 
   return (
     <SafeAreaView className="bg-primary h-full px-4">
-      <View className="flex-col items-center my-6">
+      {user?.name ? (<View className="flex-col items-center my-6">
         <TouchableOpacity className="absolute right-4 top-4"
           onPress={handleLogout}
         >
@@ -161,13 +117,19 @@ const Settings = () => {
             tintColor='white'
             className="w-16 h-16"
           />
-          <Text className="text-2xl text-white font-semibold mt-4">{user?.name || 'John'}</Text>
+          <Text className="text-2xl text-white font-psemibold mt-4">{user?.name || 'John'}</Text>
         </TouchableOpacity>
-      </View>
+      </View>) : (
+        <TouchableOpacity className="flex-col p-5 items-center my-12"
+          onPress={() => router.replace('/sign-in')}
+        >
+          <Text className="text-2xl text-white font-psemibold mt-4"> LogIn/SignUp</Text>
+        </TouchableOpacity>
+      )}
 
       <View className="mt-4">
         <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={toggleModal}>
-          <Text className="text-white text-lg">Set Day Offs</Text>
+          <Text className="text-white text-lg font-psemibold ">Set Day Offs</Text>
           <Image
             source={icons.right}
             resizeMode="contain"
@@ -177,19 +139,22 @@ const Settings = () => {
 
         </TouchableOpacity>
         <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={() => router.push('/setting/shifts')}>
-          <Text className="text-white text-lg">Shifts</Text>
+          <Text className="text-white  text-lg font-psemibold">Shifts</Text>
           <Image
             source={icons.shift}
             resizeMode="contain"
             tintColor='white'
-            className="w-6 h-6"
+            className="w-8 h-8"
           />
-
         </TouchableOpacity>
 
         <View className="p-4 border-b border-black-200 flex-row justify-between items-center">
-          <Text className="text-white text-lg">Notifications</Text>
-          <Switch value={notificationsEnabled} onValueChange={toggleNotifications} />
+          <Text className="text-white text-lg font-psemibold">Notifications</Text>
+          <Switch
+            trackColor={{ false: '#767577', true: '#81b0ff' }}
+            thumbColor={notificationsEnabled ? '#407BFF' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            value={notificationsEnabled} onValueChange={toggleNotifications} />
         </View>
 
         {/* <View className="p-4 border-b border-black-200 flex-row justify-between items-center">
@@ -198,7 +163,7 @@ const Settings = () => {
         </View> */}
 
         <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={handleRateApp}>
-          <Text className="text-white text-lg">Rate App</Text>
+          <Text className="text-white text-lg font-psemibold">Rate App</Text>
           <Image
             source={icons.star}
             resizeMode="contain"
@@ -208,7 +173,7 @@ const Settings = () => {
         </TouchableOpacity>
 
         <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={handleInviteFriends}>
-          <Text className="text-white text-lg">Invite Friends</Text>
+          <Text className="text-white text-lg font-psemibold">Invite Friends</Text>
           <Image
             source={icons.share}
             resizeMode="contain"
@@ -218,7 +183,7 @@ const Settings = () => {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleReportABug} className="p-4 border-b border-black-200 flex-row justify-between items-center">
-          <Text className="text-white text-lg">Report a Bug</Text>
+          <Text className="text-white text-lg font-psemibold">Report a Bug</Text>
           <Image
             source={icons.bug}
             resizeMode="contain"
@@ -229,7 +194,7 @@ const Settings = () => {
 
         <TouchableOpacity onPress={handleSuggestions}
           className="p-4 border-b border-black-200 flex-row justify-between items-center" >
-          <Text className="text-white text-lg">Suggestions</Text>
+          <Text className="text-white text-lg font-psemibold">Suggestions</Text>
           <Image
             source={icons.light}
             resizeMode="contain"
@@ -239,7 +204,7 @@ const Settings = () => {
         </TouchableOpacity>
 
         <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={() => router.push('/setting/about')}>
-          <Text className="text-white text-lg">About App</Text>
+          <Text className="text-white text-lg font-psemibold">About</Text>
           <Image
             source={icons.info}
             resizeMode="contain"
