@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { View, Text, Image, TouchableOpacity, Linking, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { icons } from '../../../constants';
@@ -64,7 +64,7 @@ const AboutApp = () => {
           </Text>
           <View className="flex-row justify-between px-8">
             <TouchableOpacity className="px-4 py-2 rounded-xl bg-secondary"
-              onPress={() => openLink('https://www.linkedin.com/in/kamal-profile')} >
+              onPress={() => openLink('https://www.linkedin.com/in/kamal-kumar-8b3a6b230/')} >
               <Image
                 source={icons.linkedin}
                 resizeMode="contain"
@@ -73,7 +73,7 @@ const AboutApp = () => {
               />
             </TouchableOpacity>
             <TouchableOpacity className="px-4 py-2 rounded-xl bg-secondary"
-              onPress={() => openLink('mailto:kamal@example.com')}  >
+              onPress={() => openLink('mailto:mr.kamal0120gmail.com')}  >
               <Image
                 source={icons.mail}
                 resizeMode="contain"
@@ -82,7 +82,7 @@ const AboutApp = () => {
               />
             </TouchableOpacity>
             <TouchableOpacity className="px-4 py-2 rounded-xl bg-secondary"
-              onPress={() => openLink('https://github.com/kamal-profile')} >
+              onPress={() => openLink('https://github.com/kamal-kumar-001')} >
               <Image
                 source={icons.github}
                 resizeMode="contain"
