@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Switch, TouchableOpacity, Image, Modal, Linking, Share } from 'react-native';
+import { View, Text, Switch, TouchableOpacity, Image, Modal, Linking, Share, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from "../../../context/GlobalProvider";
 import { router } from "expo-router";
@@ -32,7 +32,7 @@ const Settings = () => {
   }, []);
 
   const handleRateApp = () => {
-    Linking.openURL('https://play.google.com/store/apps/details?id=com.yourapp');
+    Linking.openURL('https://play.google.com/store/apps/details?id=kamal.dev');
   };
   const handleSuggestions = () => {
     const email = 'mrkamal0120@gmail.com';
@@ -55,7 +55,7 @@ const Settings = () => {
   const handleInviteFriends = async () => {
     try {
       await Share.share({
-        message: 'Check out this cool app: [App Link]',
+        message: 'Hey! 🎉 Check out Overtime App, the ultimate app to effortlessly manage your overtime, leaves, holidays, and shifts. 🚀 Join the community and stay on top of your schedule. Download now and share with friends: https://play.google.com/store/apps/details?id=kamal.dev',
       });
     } catch (error) {
       alert(error.message);
@@ -93,157 +93,218 @@ const Settings = () => {
   const toggleNotifications = () => {
     setNotificationsEnabled(!notificationsEnabled);
   };
+  const handleBackup = () => {
+    router.push('/setting/backup')
+  };
 
 
   return (
     <SafeAreaView className="bg-primary h-full px-4">
-      {user?.name ? (<View className="flex-col items-center my-6">
-        <TouchableOpacity className="absolute right-4 top-4"
-          onPress={handleLogout}
-        >
-          <Image
-            source={icons.logout}
-            resizeMode="contain"
-            tintColor='red'
-            className="w-6 h-6"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity className="p-4 flex-col border-b border-black-200  justify-between items-center"
-          onPress={() => router.push('/setting/profile')}
-        >
-          <Image
-            source={icons.robot}
-            resizeMode="contain"
-            tintColor='white'
-            className="w-16 h-16"
-          />
-          <Text className="text-2xl text-white font-psemibold mt-4">{user?.name || 'John'}</Text>
-        </TouchableOpacity>
-      </View>) : (
-        <TouchableOpacity className="flex-col p-5 items-center my-12"
-          onPress={() => router.replace('/sign-in')}
-        >
-          <Text className="text-2xl text-white font-psemibold mt-4"> LogIn/SignUp</Text>
-        </TouchableOpacity>
-      )}
+      <ScrollView>
+        {user?.name ? (<View className="flex-col items-center my-6">
+          <TouchableOpacity className="absolute right-4 top-4"
+            onPress={handleLogout}
+          >
+            <Image
+              source={icons.logout}
+              resizeMode="contain"
+              tintColor='red'
+              className="w-6 h-6"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity className="p-4 flex-col border-b border-black-200  justify-between items-center"
+            onPress={() => router.push('/setting/profile')}
+          >
+            <Image
+              source={icons.robot}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-16 h-16"
+            />
+            <Text className="text-2xl text-white font-psemibold mt-4">{user?.name || 'John'}</Text>
+          </TouchableOpacity>
+        </View>) : (
+          <TouchableOpacity className="flex-col p-5 items-center my-12"
+            onPress={() => router.replace('/sign-in')}
+          >
+            <Text className="text-2xl text-white font-psemibold mt-4"> LogIn/SignUp</Text>
+          </TouchableOpacity>
+        )}
 
-      <View className="mt-4">
-        <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={toggleModal}>
-          <Text className="text-white text-lg font-psemibold ">Set Day Offs</Text>
-          <Image
-            source={icons.right}
-            resizeMode="contain"
-            tintColor='white'
-            className="w-6 h-6"
-          />
+        <View className="mt-4">
+          <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={toggleModal}>
+            <Image
+              source={icons.holiday}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+            <Text className="text-white flex-1 mx-4 text-lg font-psemibold ">Set Day Offs</Text>
+            <Image
+              source={icons.right}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
 
-        </TouchableOpacity>
-        <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={() => router.push('/setting/shifts')}>
-          <Text className="text-white  text-lg font-psemibold">Shifts</Text>
-          <Image
-            source={icons.shift}
-            resizeMode="contain"
-            tintColor='white'
-            className="w-8 h-8"
-          />
-        </TouchableOpacity>
+          </TouchableOpacity>
+          <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={() => router.push('/setting/shifts')}>
+            <Image
+              source={icons.shift}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+            <Text className="text-white flex-1 mx-4  text-lg font-psemibold">Shifts</Text>
+            <Image
+              source={icons.right}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+          </TouchableOpacity>
 
-        <View className="p-4 border-b border-black-200 flex-row justify-between items-center">
-          <Text className="text-white text-lg font-psemibold">Notifications</Text>
-          <Switch
-            trackColor={{ false: '#767577', true: '#81b0ff' }}
-            thumbColor={notificationsEnabled ? '#407BFF' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            value={notificationsEnabled} onValueChange={toggleNotifications} />
-        </View>
+          {/* <View className="p-4 border-b border-black-200 flex-row justify-between items-center">
+            <Text className="text-white text-lg font-psemibold">Notifications</Text>
+            <Switch
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={notificationsEnabled ? '#407BFF' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              value={notificationsEnabled} onValueChange={toggleNotifications} />
+          </View> */}
 
-        {/* <View className="p-4 border-b border-black-200 flex-row justify-between items-center">
+          {/* <View className="p-4 border-b border-black-200 flex-row justify-between items-center">
           <Text className="text-white text-lg">Dark Theme</Text>
           <Switch value={isDarkTheme} onValueChange={setDarkTheme} />
         </View> */}
 
-        <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={handleRateApp}>
-          <Text className="text-white text-lg font-psemibold">Rate App</Text>
-          <Image
-            source={icons.star}
-            resizeMode="contain"
-            tintColor='white'
-            className="w-6 h-6"
-          />
-        </TouchableOpacity>
+          <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={handleRateApp}>
+            <Image
+              source={icons.star}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+            <Text className="text-white flex-1 mx-4 text-lg font-psemibold">Rate App</Text>
+            <Image
+              source={icons.right}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={handleBackup}>
+            <Image
+              source={icons.backup}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+            <Text className="text-white mx-4 flex-1 text-lg font-psemibold">Back Up</Text>
+            <Image
+              source={icons.right}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+          </TouchableOpacity>
 
-        <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={handleInviteFriends}>
-          <Text className="text-white text-lg font-psemibold">Invite Friends</Text>
-          <Image
-            source={icons.share}
-            resizeMode="contain"
-            tintColor='white'
-            className="w-6 h-6"
-          />
-        </TouchableOpacity>
+          <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={handleInviteFriends}>
+            <Image
+              source={icons.share}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+            <Text className="text-white flex-1 mx-4 text-lg font-psemibold">Invite Friends</Text>
+            <Image
+              source={icons.right}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleReportABug} className="p-4 border-b border-black-200 flex-row justify-between items-center">
-          <Text className="text-white text-lg font-psemibold">Report a Bug</Text>
-          <Image
-            source={icons.bug}
-            resizeMode="contain"
-            tintColor='white'
-            className="w-6 h-6"
-          />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={handleReportABug} className="p-4 border-b border-black-200 flex-row justify-between items-center">
+            <Image
+              source={icons.bug}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+            <Text className="text-white flex-1 mx-4 text-lg font-psemibold">Report a Bug</Text>
+            <Image
+              source={icons.right}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleSuggestions}
-          className="p-4 border-b border-black-200 flex-row justify-between items-center" >
-          <Text className="text-white text-lg font-psemibold">Suggestions</Text>
-          <Image
-            source={icons.light}
-            resizeMode="contain"
-            tintColor='white'
-            className="w-6 h-6"
-          />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={handleSuggestions}
+            className="p-4 border-b border-black-200 flex-row justify-between items-center" >
+            <Image
+              source={icons.light}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+            <Text className="text-white flex-1 mx-4 text-lg font-psemibold">Suggestions</Text>
+            <Image
+              source={icons.right}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+          </TouchableOpacity>
 
-        <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={() => router.push('/setting/about')}>
-          <Text className="text-white text-lg font-psemibold">About</Text>
-          <Image
-            source={icons.info}
-            resizeMode="contain"
-            tintColor='white'
-            className="w-6 h-6"
-          />
-        </TouchableOpacity>
-      </View>
-
-      <Modal visible={isModalVisible} animationType="slide">
-        <View className="bg-primary h-full px-8 justify-center">
-          <Text className="text-white text-lg font-semibold mb-4">Select Your Day(s) Off</Text>
-          {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((day, index) => (
-            <View key={index} className="flex-col mb-2">
-              <View className="flex-row items-center justify-between">
-                <Text className="text-white font-pregular">{day}</Text>
-                <Checkbox
-                  value={selectedDays?.includes(day)}
-                  onValueChange={() => handleDaySelection(day)}
-                />
-              </View>
-              {index < 6 && <View className="bg-gray-500 h-px my-2" />}
-            </View>
-          ))}
-          <View className="flex-row justify-between py-8 px-8">
-            <TouchableOpacity className="w-2/5 py-2 rounded-xl bg-red-600" onPress={toggleModal}  >
-              <Text className="font-pregular text-center  text-white" >
-                Cancel
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity className="w-2/5 py-2 rounded-xl bg-secondary" onPress={handleDayOffSubmit} >
-              <Text className="font-pregular text-center text-white" >
-                Submit
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity className="p-4 border-b border-black-200 flex-row justify-between items-center" onPress={() => router.push('/setting/about')}>
+            <Image
+              source={icons.info}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+            <Text className="text-white flex-1 mx-4 text-lg font-psemibold">About</Text>
+            <Image
+              source={icons.right}
+              resizeMode="contain"
+              tintColor='white'
+              className="w-6 h-6"
+            />
+          </TouchableOpacity>
         </View>
-      </Modal>
 
+        <Modal visible={isModalVisible} animationType="slide">
+          <View className="bg-primary h-full px-8 justify-center">
+            <Text className="text-white text-lg font-semibold mb-4">Select Your Day(s) Off</Text>
+            {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((day, index) => (
+              <View key={index} className="flex-col mb-2">
+                <View className="flex-row items-center justify-between">
+                  <Text className="text-white font-pregular">{day}</Text>
+                  <Checkbox
+                    value={selectedDays?.includes(day)}
+                    onValueChange={() => handleDaySelection(day)}
+                  />
+                </View>
+                {index < 6 && <View className="bg-gray-500 h-px my-2" />}
+              </View>
+            ))}
+            <View className="flex-row justify-between py-8 px-8">
+              <TouchableOpacity className="w-2/5 py-2 rounded-xl bg-red-600" onPress={toggleModal}  >
+                <Text className="font-pregular text-center  text-white" >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity className="w-2/5 py-2 rounded-xl bg-secondary" onPress={handleDayOffSubmit} >
+                <Text className="font-pregular text-center text-white" >
+                  Submit
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </ScrollView>
 
     </SafeAreaView>
   );

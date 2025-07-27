@@ -114,6 +114,7 @@ const Shifts = () => {
                         <View>
                             <FormField
                                 title="Shift Name"
+                                placeholder="Enter Shift Name"
                                 value={form.shiftName}
                                 handleChangeText={(e) => setForm({ ...form, shiftName: e })}
                                 otherStyles="mt-7"
@@ -123,7 +124,7 @@ const Shifts = () => {
                                 <Text className="text-base text-gray-100 font-pmedium">Check In Time</Text>
                                 <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center">
                                     <TouchableOpacity onPress={() => setCheckInPickerVisibility(true)}>
-                                        <Text className="bg-black-100 p-4 py-4 font-psemibold rounded-lg text-white">{form.checkIn.toLocaleTimeString()}</Text>
+                                        <Text className="bg-black-100 p-4 py-4 font-psemibold rounded-lg text-white uppercase">{form.checkIn.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</Text>
                                     </TouchableOpacity>
                                     {isCheckInPickerVisible && (
                                         <DateTimePicker
@@ -141,7 +142,7 @@ const Shifts = () => {
                                 <Text className="text-base text-gray-100 font-pmedium">Check Out Time</Text>
                                 <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center">
                                     <TouchableOpacity className="" onPress={() => setCheckOutPickerVisibility(true)}>
-                                        <Text className=" font-psemibold p-4 py-4 rounded-lg bg-black-100  text-white ">{form.checkOut.toLocaleTimeString()}</Text>
+                                        <Text className=" font-psemibold p-4 py-4 rounded-lg bg-black-100  text-white uppercase">{form.checkOut.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</Text>
                                     </TouchableOpacity>
                                     {isCheckOutPickerVisible && (
                                         <DateTimePicker

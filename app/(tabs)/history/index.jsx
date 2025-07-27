@@ -46,8 +46,8 @@ const HistoryPage = () => {
   const getMarkedDates = () => {
     let markedDates = {};
     const today = new Date();
-    const startDate = new Date(today.getFullYear(), today.getMonth(), 1);
-    const endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    const startDate = new Date(today.getFullYear(), 0, 1);
+    const endDate = new Date(today.getFullYear(), 11, 31);
 
     for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
       const dateString = d.toISOString().split('T')[0];
@@ -123,7 +123,7 @@ const HistoryPage = () => {
             pastScrollRange={12}
             futureScrollRange={12}
             scrollEnabled={true}
-            showScrollIndicator={true}
+            showScrollIndicator={false}
             onDayPress={handleDateClick}
             horizontal={true}
             pagingEnabled={true}

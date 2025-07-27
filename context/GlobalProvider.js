@@ -12,7 +12,7 @@ const GlobalProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUserFromLocalStorage = async () => {
-      const storedUser = await AsyncStorage.getItem('userData');
+      const storedUser = await AsyncStorage.getItem('user');
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);

@@ -40,9 +40,11 @@ import shift from "../assets/icons/shift.png";
 import icon from "../assets/icon.png";
 import emergencyicon from "../assets/icons/emergency.png";
 import sick from "../assets/icons/sick.png";
+import backup from "../assets/icons/backup.png";
 
 export default {
   welcome,
+  backup,
   sick,
   emergencyicon,
   icon,

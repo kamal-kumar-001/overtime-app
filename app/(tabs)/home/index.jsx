@@ -15,6 +15,7 @@ const Home = () => {
   const [status, setStatus] = useState(null);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
+  const [initialShift, setInitialShift] = useState(0);
 
 
   const loadStoredData = async () => {
@@ -26,10 +27,10 @@ const Home = () => {
     if (storedData) {
       const parsedData = JSON.parse(storedData);
       const data = parsedData[selectedDate] || {};
-      if (data?.Overtime) {
+      if (data.overtime) {
         setStatus('overtime');
-        setMessageType('party');
-        setMessage(`You done ${data?.Overtime?.duration || ''} Hours Overtime. Enjoy your day!`);
+        setMessageType('overtime');
+        setMessage(`You done ${data?.overtime?.duration || ''} Hours Overtime. Enjoy your day!`);
       } else if (data.checkOut && !data?.Overtime) {
         setStatus('checkedOut');
         setMessageType('party')
@@ -111,7 +112,7 @@ const Home = () => {
   };
 
   const handleAddOvertime = ({ startTime, endTime, duration, checkInTime, checkOutTime }) => {
-    saveData('Overtime', { startTime, endTime, duration, checkIn: checkInTime, checkOut: checkOutTime });
+    saveData('overtime', { startTime, endTime, duration, checkIn: checkInTime, checkOut: checkOutTime });
     setStatus('overtime');
     setMessage(`You did ${duration} Hours Overtime. Enjoy your day!`);
   };
@@ -150,6 +151,7 @@ const Home = () => {
           <>
             <Actions
               shifts={shifts}
+              initialShift={initialShift}
               handleCheckOut={handleCheckOut}
               handleMarkHoliday={handleMarkHoliday}
               handleAddOvertime={handleAddOvertime}

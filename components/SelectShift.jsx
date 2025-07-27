@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import OvertimeComponent from './OverTime';
 import { icons } from '../constants';
 import { router } from "expo-router";
 
-const ShiftSelect = ({ shifts, handleCheckOut, handleAddOvertime }) => {
-    const [selectedShift, setSelectedShift] = useState(null);
+const ShiftSelect = ({ shifts, handleCheckOut, handleAddOvertime, initialShift }) => {
+    const [selectedShift, setSelectedShift] = useState(shifts[initialShift]);
     const [overtime, setOvertime] = useState(false)
     const handleOvertime = () => {
         setOvertime(true)
     }
 
-    useEffect(() => {
-        if (shifts && shifts.length > 0) {
-            setSelectedShift(shifts[0]);
-        }
-    }, [shifts]);
+    // useEffect(() => {
+    //     if (shifts && shifts.length > 0) {
+    //         setSelectedShift(shifts[0]);
+    //     }
+    // }, [shifts]);
 
     const handleShiftSelect = (shift) => {
         setSelectedShift(shift);

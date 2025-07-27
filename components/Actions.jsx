@@ -4,11 +4,11 @@ import ShiftSelect from './SelectShift';
 import { icons } from '../constants';
 
 
-const Actions = ({ handleMarkHoliday, handleHalfday, handleAddOvertime, handleSetLeave, shifts, handleCheckOut }) => {
+const Actions = ({ handleMarkHoliday, initialShift, handleHalfday, handleAddOvertime, handleSetLeave, shifts, handleCheckOut }) => {
 
     return (
         <View className=" space-y-4">
-            <ShiftSelect shifts={shifts} handleCheckOut={handleCheckOut} handleAddOvertime={handleAddOvertime} />
+            <ShiftSelect initialShift={initialShift} shifts={shifts} handleCheckOut={handleCheckOut} handleAddOvertime={handleAddOvertime} />
             <View className="flex flex-row justify-between">
                 <TouchableOpacity
                     onPress={handleHalfday}

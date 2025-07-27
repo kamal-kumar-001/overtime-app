@@ -13,6 +13,7 @@ const SettingLayout = () => {
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="profile" options={{ headerShown: false }} />
         <Stack.Screen name="about" options={{ headerShown: false }} />
+        <Stack.Screen name="backup" options={{ headerShown: false }} />
         <Stack.Screen name="shifts" options={{ headerShown: false }} />
       </Stack>
 

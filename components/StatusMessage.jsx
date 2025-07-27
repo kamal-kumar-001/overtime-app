@@ -15,6 +15,9 @@ const StatusMessage = ({ message, messageType, setStatus }) => {
         case 'party':
             iconSource = icons.party;
             break;
+        case 'overtime':
+            iconSource = icons.party;
+            break;
         default:
             iconSource = icons.party; // or set a default icon if needed
             break;
